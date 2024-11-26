@@ -1,5 +1,11 @@
+[build-system]
+requires = ["setuptools>=64", "setuptools_scm>=8"]
+build-backend = "setuptools.build_meta"
+
 [project]
 # EOL of 3.8 was 2024-10-07
 requires-python = ">= 3.9"
 name = "wvlet"
 dynamic = ["version"]
+
+[tool.setuptools_scm]
