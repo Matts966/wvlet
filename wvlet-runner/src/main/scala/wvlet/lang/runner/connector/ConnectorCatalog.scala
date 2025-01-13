@@ -78,8 +78,9 @@ class ConnectorCatalog(
     .get(schemaName)
     .map(_.name)
 
-  override def listTables(schemaName: String): Seq[Catalog.TableDef] = tablesInSchemaCache
-    .get(schemaName)
+  override def listTables(schemaName: String): Seq[Catalog.TableDef] = tablesInSchemaCache.get(
+    schemaName
+  )
 
   override def findTable(schemaName: String, tableName: String): Option[Catalog.TableDef] =
     tablesInSchemaCache

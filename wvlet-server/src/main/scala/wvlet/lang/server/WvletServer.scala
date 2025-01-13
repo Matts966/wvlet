@@ -42,8 +42,11 @@ case class WvletServerConfig(
   lazy val workEnv: WorkEnv = WorkEnv(path = workDir)
 
 object WvletServer extends LogSupport:
-  def router: RxRouter = RxRouter
-    .of(RxRouter.of[FrontendApiImpl], RxRouter.of[FileApiImpl], RxRouter.of[StaticContentApi])
+  def router: RxRouter = RxRouter.of(
+    RxRouter.of[FrontendApiImpl],
+    RxRouter.of[FileApiImpl],
+    RxRouter.of[StaticContentApi]
+  )
 
   def startServer(config: WvletServerConfig, openBrowser: Boolean = false): Unit = design(config)
     .build[NettyServer] { server =>
@@ -86,8 +89,12 @@ object WvletServer extends LogSupport:
       .bindInstance[WvletServerConfig](config)
       .bindInstance[WorkEnv](config.workEnv)
       .bindInstance[Profile](
-        Profile
-          .getProfile(config.profile, config.catalog, config.schema, Profile.defaultDuckDBProfile)
+        Profile.getProfile(
+          config.profile,
+          config.catalog,
+          config.schema,
+          Profile.defaultDuckDBProfile
+        )
       )
       .bindProvider[Profile, DBConnector] { (p: Profile) =>
         val prop = Map("prepareTPCH" -> config.prepareTPCH)
@@ -101,6 +108,8 @@ object WvletServer extends LogSupport:
         )
       }
       .bindSingleton[QueryExecutor]
+
+  end design
 
   def testDesign: Design = design(WvletServerConfig(port = IOUtil.unusedPort)).bindProvider {
     (server: NettyServer) =>

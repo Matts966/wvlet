@@ -374,7 +374,9 @@ object TypeResolver extends Phase("type-resolver") with LogSupport:
                       .workEnv
                       .errorLogger
                       .debug(
-                        s"Unresolved table ref: ${ref.name.fullName}: ${context.scope.getAllEntries}"
+                        s"Unresolved table ref: ${ref.name.fullName}: ${context
+                            .scope
+                            .getAllEntries}"
                       )
                     ref
       case ref: TableFunctionCall if !ref.relationType.isResolved =>
@@ -935,8 +937,10 @@ object TypeResolver extends Phase("type-resolver") with LogSupport:
       expr: Expression,
       inputRelationType: RelationType,
       context: Context
-  ): Expression = resolveExpression(inputRelationType, context)
-    .applyOrElse(expr, identity[Expression])
+  ): Expression = resolveExpression(inputRelationType, context).applyOrElse(
+    expr,
+    identity[Expression]
+  )
 
   /**
     * Resolve the given list of attribute types using known attributes from the child plan nodes as

@@ -21,5 +21,6 @@ class GenericConnector extends DBConnector(Generic):
 
   override def newConnection: Connection = getConnector.newConnection
 
-  override def listFunctions(catalog: String): List[SQLFunction] = getConnector
-    .listFunctions(catalog)
+  override def listFunctions(catalog: String): List[SQLFunction] = getConnector.listFunctions(
+    catalog
+  )
