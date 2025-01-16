@@ -78,8 +78,11 @@ class QueryExecutor(
       else
         u.sourceFile.offsetAt(nodeLocation)
 
-    val targetStatement: LogicalPlan = QuerySelector
-      .selectQuery(u.resolvedPlan, targetOffset, querySelection)
+    val targetStatement: LogicalPlan = QuerySelector.selectQuery(
+      u.resolvedPlan,
+      targetOffset,
+      querySelection
+    )
     trace(s"Selected statement: ${targetStatement}, ${querySelection}")
     val ctx           = rootContext.withCompilationUnit(u).newContext(Symbol.NoSymbol)
     val executionPlan = ExecutionPlanner.plan(u, targetStatement, ctx)
@@ -196,7 +199,9 @@ class QueryExecutor(
                       .compilationUnit
                       .text(md.child.span)
                       // Remove indentation
-                      .split("\n").map(_.trim).mkString("\n")
+                      .split("\n")
+                      .map(_.trim)
+                      .mkString("\n")
 
                     // TODO Report query in the provided output
                     println(query)

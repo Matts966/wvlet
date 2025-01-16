@@ -192,7 +192,9 @@ object GenSQL extends Phase("generate-sql"):
           if s.saveOptions.nonEmpty && context.dbType.supportCreateTableWithOption then
             s.saveOptions
               .map { opt =>
-                s"${opt.key.fullName}=${GenSQL(context).printExpression(opt.value)(using Indented(0))}"
+                s"${opt.key.fullName}=${GenSQL(context).printExpression(opt.value)(using
+                    Indented(0)
+                  )}"
               }
               .mkString(" with (", ", ", ")")
           else
@@ -495,7 +497,9 @@ class GenSQL(ctx: Context) extends LogSupport:
         val onExpr   = pivotOnExpr(p)
         val aggItems = a.selectItems.map(x => printExpression(x)).mkString(", ")
         val pivotExpr =
-          s"pivot ${printRelation(p.child)(using sqlContext.enterFrom)}\n  on ${onExpr}\n  using ${aggItems}"
+          s"pivot ${printRelation(p.child)(using
+              sqlContext.enterFrom
+            )}\n  on ${onExpr}\n  using ${aggItems}"
         if p.groupingKeys.isEmpty then
           selectWithIndentAndParenIfNecessary(pivotExpr)
         else
@@ -632,7 +636,9 @@ class GenSQL(ctx: Context) extends LogSupport:
           case v: Values if sqlContext.nestingLevel == 0 =>
             selectAllWithIndent(s"${printValues(v)} as ${tableAlias}")
           case v: Values if sqlContext.nestingLevel > 0 =>
-            s"${selectWithIndentAndParenIfNecessary(s"select * from ${printValues(v)} as ${tableAlias}")} as ${a.alias.fullName}"
+            s"${selectWithIndentAndParenIfNecessary(
+                s"select * from ${printValues(v)} as ${tableAlias}"
+              )} as ${a.alias.fullName}"
           case _ =>
             indent(s"${printRelation(a.inputRelation)(using sqlContext.nested)} as ${tableAlias}")
       case p: ParenthesizedRelation =>
@@ -686,8 +692,9 @@ class GenSQL(ctx: Context) extends LogSupport:
             printExpression(c)
           }
         selectWithIndentAndParenIfNecessary(
-          s"""select *, ${newColumns
-              .mkString(", ")} from ${printRelation(a.inputRelation)(using sqlContext.enterFrom)}"""
+          s"""select *, ${newColumns.mkString(", ")} from ${printRelation(a.inputRelation)(using
+              sqlContext.enterFrom
+            )}"""
         )
       case d: ExcludeColumnsFromRelation =>
         selectWithIndentAndParenIfNecessary(
@@ -710,8 +717,9 @@ class GenSQL(ctx: Context) extends LogSupport:
                 s"${f.toSQLAttributeName}"
           }
         selectWithIndentAndParenIfNecessary(
-          s"""select ${newColumns
-              .mkString(", ")} from ${printRelation(r.inputRelation)(using sqlContext.enterFrom)}"""
+          s"""select ${newColumns.mkString(", ")} from ${printRelation(r.inputRelation)(using
+              sqlContext.enterFrom
+            )}"""
         )
       case s: ShiftColumns =>
         selectWithIndentAndParenIfNecessary(
@@ -833,7 +841,9 @@ class GenSQL(ctx: Context) extends LogSupport:
           )
         else
           selectWithIndentAndParenIfNecessary(
-            s"select * from values ${indent(modelValues.mkString(", "))} as __models(name, args, package_name)"
+            s"select * from values ${indent(
+                modelValues.mkString(", ")
+              )} as __models(name, args, package_name)"
           )
       case s: Sample =>
         val child = printRelation(s.child)(using sqlContext.enterFrom)
@@ -853,7 +863,10 @@ class GenSQL(ctx: Context) extends LogSupport:
                   // Supported only in td-trino
                   s"select *, reservoir_sample(${n}) over() from ${child}"
                 case Percentage(percentage) =>
-                  s"select * from ${child} TABLESAMPLE ${s.method.toString.toLowerCase()}(${percentage})"
+                  s"select * from ${child} TABLESAMPLE ${s
+                      .method
+                      .toString
+                      .toLowerCase()}(${percentage})"
             case _ =>
               warn(s"Unsupported sampling method: ${s.method} for ${ctx.dbType}")
               child
@@ -933,7 +946,9 @@ class GenSQL(ctx: Context) extends LogSupport:
       case s: SubQueryExpression =>
         s"(${printRelation(s.query)(using sqlContext.nested)})"
       case i: IfExpr =>
-        s"if(${printExpression(i.cond)}, ${printExpression(i.onTrue)}, ${printExpression(i.onFalse)})"
+        s"if(${printExpression(i.cond)}, ${printExpression(i.onTrue)}, ${printExpression(
+            i.onFalse
+          )})"
       case i: Wildcard =>
         i.strExpr
       case n: Not =>
