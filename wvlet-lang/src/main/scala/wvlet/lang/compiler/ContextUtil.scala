@@ -32,8 +32,9 @@ object ContextUtil:
 
   extension (cu: CompilationUnit)
     def sourceLocationAt(span: Span): SourceLocation = sourceLocationAt(nodeLocationAt(span))
-    def sourceLocationAt(nodeLocation: NodeLocation): SourceLocation = cu
-      .toSourceLocation(nodeLocation)
+    def sourceLocationAt(nodeLocation: NodeLocation): SourceLocation = cu.toSourceLocation(
+      nodeLocation
+    )
 
     def endNodeLocationAt(span: Span): NodeLocation =
       val src  = cu.sourceFile
