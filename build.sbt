@@ -214,6 +214,7 @@ lazy val nativeCliLinuxArm = nativeCrossProject(
   "aarch64-unknown-linux-gnu",
   linkerOptions = Seq("-fuse-ld=ld.lld")
 )
+
 lazy val nativeCliWindowsArm   = nativeCrossProject("windows-arm64", "arm64-w64-windows-gnu")
 lazy val nativeCliWindowsIntel = nativeCrossProject("windows-x64", "x86_64-w64-windows-gnu")
 
@@ -307,7 +308,7 @@ lazy val server = project
     libraryDependencies ++=
       Seq(
         // For redirecting slf4j logs to airframe-log
-        "org.slf4j"           % "slf4j-jdk14"         % "2.0.16",
+        "org.slf4j"           % "slf4j-jdk14"         % "2.0.17",
         "org.wvlet.airframe" %% "airframe-launcher"   % AIRFRAME_VERSION,
         "org.wvlet.airframe" %% "airframe-http-netty" % AIRFRAME_VERSION
       ),
