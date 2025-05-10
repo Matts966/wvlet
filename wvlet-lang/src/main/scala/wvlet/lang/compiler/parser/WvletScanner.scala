@@ -32,8 +32,9 @@ import scala.annotation.{switch, tailrec}
 case class TokenData(token: WvletToken, str: String, offset: Int, length: Int):
   override def toString: String = f"[${offset}%3d:${length}%2d] ${token}%10s: ${str}"
 
-  def sourceLocation(using unit: CompilationUnit): SourceLocation = unit
-    .sourceLocationAt(nodeLocation(using unit.sourceFile))
+  def sourceLocation(using unit: CompilationUnit): SourceLocation = unit.sourceLocationAt(
+    nodeLocation(using unit.sourceFile)
+  )
 
   def span: Span = Span(offset, offset + length, 0)
 
@@ -271,7 +272,9 @@ class WvletScanner(source: SourceFile, config: ScannerConfig = ScannerConfig())
       else
         -1
     trace(
-      s"fetchToken[${current}]: '${String.valueOf(ch)}' charOffset:${charOffset} lastCharOffset:${lastCharOffset}, lineStartOffset:${lineStartOffset}"
+      s"fetchToken[${current}]: '${String.valueOf(
+          ch
+        )}' charOffset:${charOffset} lastCharOffset:${lastCharOffset}, lineStartOffset:${lineStartOffset}"
     )
 
     (ch: @switch) match

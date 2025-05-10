@@ -29,8 +29,9 @@ class WvletREPLMainTest extends AirSpec:
   }
 
   test("def new model") {
-    WvletREPLMain
-      .main("-w spec/model1 -c 'model m(v:int) = from person where id = v end' -c 'from m(1)'")
+    WvletREPLMain.main(
+      "-w spec/model1 -c 'model m(v:int) = from person where id = v end' -c 'from m(1)'"
+    )
   }
 
   test("show models") {

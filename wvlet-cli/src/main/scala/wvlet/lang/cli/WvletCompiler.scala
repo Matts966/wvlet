@@ -109,7 +109,8 @@ class WvletCompiler(opts: WvletGlobalOption, compilerOption: WvletCompilerOption
       .context
       .withCompilationUnit(inputUnit)
       // Disable debug path as we can't run tests in plain SQL
-      .withDebugRun(false).newContext(Symbol.NoSymbol)
+      .withDebugRun(false)
+      .newContext(Symbol.NoSymbol)
 
     GenSQL.generateSQL(inputUnit, ctx)
   end generateSQL

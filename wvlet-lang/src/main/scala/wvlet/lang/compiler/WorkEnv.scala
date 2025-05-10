@@ -11,8 +11,9 @@ import wvlet.log.{LogLevel, LogRotationHandler, Logger}
   */
 case class WorkEnv(path: String = ".", logLevel: LogLevel = Logger.getDefaultLogLevel)
     extends WorkEnvCompat:
-  lazy val hasWvletFiles: Boolean = Option(new java.io.File(path).listFiles())
-    .exists(_.exists(_.getName.endsWith(".wv")))
+  lazy val hasWvletFiles: Boolean = Option(new java.io.File(path).listFiles()).exists(
+    _.exists(_.getName.endsWith(".wv"))
+  )
 
   def targetFolder: String =
     if hasWvletFiles then

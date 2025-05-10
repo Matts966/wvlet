@@ -633,8 +633,10 @@ case class TimestampLiteral(value: String, span: Span) extends Literal with Leaf
   override def stringValue: String = value
 
 case class DecimalLiteral(value: String, span: Span) extends Literal with LeafExpression:
-  override def dataType: DataType = DataType
-    .DecimalType(TypeVariable(Name.typeName("precision")), TypeVariable(Name.typeName("scale")))
+  override def dataType: DataType = DataType.DecimalType(
+    TypeVariable(Name.typeName("precision")),
+    TypeVariable(Name.typeName("scale"))
+  )
 
   override def stringValue: String = value
 
